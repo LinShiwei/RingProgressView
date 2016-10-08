@@ -1,0 +1,10 @@
+framework module RingProgressView {
+  umbrella header "RingProgressView.h"
+
+  export *
+  module * { export * }
+}
+
+module RingProgressView.Swift {
+    header "RingProgressView-Swift.h"
+}
