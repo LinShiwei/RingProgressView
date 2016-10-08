@@ -38,6 +38,11 @@ public class RingProgressView: UIView {
             strokeLayer.strokeColor = dotColor.cgColor
         }
     }
+    private var dotBackgroundColor : UIColor = UIColor.clear{
+        didSet{
+            strokeLayer.backgroundColor = dotBackgroundColor.cgColor
+        }
+    }
     private var hasRing : Bool = true{
         didSet{
             guard ringLayer.superlayer != nil && hasRing == false else{return}
@@ -94,11 +99,12 @@ public class RingProgressView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    public func setting(dotCount count:Int=60, dotRadius radius: CGFloat=1, dotColor color:UIColor=UIColor.white, hasRing:Bool=true,  GapBetweenRingAndDot gap:CGFloat=4, ringLineWidth lineWidth:CGFloat=1,ringLineColor lineColor:UIColor=UIColor(white: 1, alpha: 0.2),  animationDuration duration:CFTimeInterval=1, direction:RingProgressViewDirection = .Counterclockwise){
+    public func setting(dotCount count:Int=60, dotRadius radius: CGFloat=1, dotColor color:UIColor=UIColor.white,dotBackgroundColor:UIColor=UIColor.clear, hasRing:Bool=true,  GapBetweenRingAndDot gap:CGFloat=4, ringLineWidth lineWidth:CGFloat=1,ringLineColor lineColor:UIColor=UIColor(white: 1, alpha: 0.2),  animationDuration duration:CFTimeInterval=1, direction:RingProgressViewDirection = .Counterclockwise){
         
         dotCount = count
         dotRadius = radius
         dotColor = color
+        self.dotBackgroundColor = dotBackgroundColor
         self.hasRing = hasRing
         ringGap = gap
         ringLineWidth = lineWidth
@@ -126,6 +132,7 @@ public class RingProgressView: UIView {
         strokeLayer.strokeColor = dotColor.cgColor
         strokeLayer.lineWidth = dotRadius*3
         strokeLayer.mask = maskLayer
+        strokeLayer.backgroundColor = dotBackgroundColor.cgColor
         layer.addSublayer(strokeLayer)
         
         ringLayer.frame = CGRect(x: ringGap, y: ringGap, width: frame.width-ringGap*2, height: frame.height-ringGap*2)
@@ -133,5 +140,6 @@ public class RingProgressView: UIView {
         ringLayer.borderWidth = ringLineWidth
         ringLayer.cornerRadius = ringLayer.frame.width/2
         layer.addSublayer(ringLayer)
+        
     }
 }
