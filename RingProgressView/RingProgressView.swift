@@ -25,6 +25,7 @@ public class RingProgressView: UIView {
             dot.frame = CGRect(x: -dotRadius, y: 0, width: 2*dotRadius, height: 2*dotRadius)
             dot.cornerRadius = dotRadius
             strokeLayer.lineWidth = dotRadius*3
+            adjustStrokeLayerTransform(clockwise: direction)
         }
     }
     private var ringGap : CGFloat = 4{
@@ -38,7 +39,7 @@ public class RingProgressView: UIView {
             strokeLayer.strokeColor = dotColor.cgColor
         }
     }
-    private var dotBackgroundColor : UIColor = UIColor.clear{
+    private var dotBackgroundColor : UIColor = UIColor.darkGray{
         didSet{
             strokeLayer.backgroundColor = dotBackgroundColor.cgColor
         }
@@ -71,6 +72,7 @@ public class RingProgressView: UIView {
                 path.addArc(center: CGPoint(x:frame.width/2,y:frame.height/2), radius: frame.width/2, startAngle: CGFloat.pi/2*3, endAngle: -CGFloat.pi/2, clockwise: true)
             }
             strokeLayer.path = path
+            adjustStrokeLayerTransform(clockwise: direction)
         }
     }
     
@@ -99,7 +101,7 @@ public class RingProgressView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    public func setting(dotCount count:Int=60, dotRadius radius: CGFloat=1, dotColor color:UIColor=UIColor.white,dotBackgroundColor:UIColor=UIColor.clear, hasRing:Bool=true,  GapBetweenRingAndDot gap:CGFloat=4, ringLineWidth lineWidth:CGFloat=1,ringLineColor lineColor:UIColor=UIColor(white: 1, alpha: 0.2),  animationDuration duration:CFTimeInterval=1, direction:RingProgressViewDirection = .Counterclockwise){
+    public func setting(dotCount count:Int=60, dotRadius radius: CGFloat=1, dotColor color:UIColor=UIColor.white,dotBackgroundColor:UIColor=UIColor.darkGray, hasRing:Bool=true,  GapBetweenRingAndDot gap:CGFloat=4, ringLineWidth lineWidth:CGFloat=1,ringLineColor lineColor:UIColor=UIColor(white: 1, alpha: 0.2),  animationDuration duration:CFTimeInterval=1, direction:RingProgressViewDirection = .Counterclockwise){
         
         dotCount = count
         dotRadius = radius
@@ -121,7 +123,7 @@ public class RingProgressView: UIView {
         maskLayer.frame = CGRect(x: (frame.width-frame.width/1.41)/2, y: (frame.width-frame.width/1.41)/2, width: frame.width/1.41, height: frame.width/1.41)
         maskLayer.instanceCount = dotCount
         maskLayer.instanceTransform = CATransform3DMakeRotation(CGFloat.pi*2/CGFloat(dotCount), 0, 0, 1)
-        maskLayer.transform = CATransform3DMakeRotation(CGFloat.pi/4, 0, 0, 1)
+//        maskLayer.transform = CATransform3DMakeRotation(CGFloat.pi/4+dotRadius/(frame.height/2), 0, 0, 1)
         maskLayer.addSublayer(dot)
         
         let path = CGMutablePath()
@@ -133,6 +135,7 @@ public class RingProgressView: UIView {
         strokeLayer.lineWidth = dotRadius*3
         strokeLayer.mask = maskLayer
         strokeLayer.backgroundColor = dotBackgroundColor.cgColor
+        adjustStrokeLayerTransform(clockwise: direction)
         layer.addSublayer(strokeLayer)
         
         ringLayer.frame = CGRect(x: ringGap, y: ringGap, width: frame.width-ringGap*2, height: frame.height-ringGap*2)
@@ -141,5 +144,17 @@ public class RingProgressView: UIView {
         ringLayer.cornerRadius = ringLayer.frame.width/2
         layer.addSublayer(ringLayer)
         
+    }
+    
+    private func adjustStrokeLayerTransform(clockwise:RingProgressViewDirection){
+        let angle = dotRadius/(frame.height/2)
+        switch clockwise {
+        case .Clockwise:
+            strokeLayer.transform = CATransform3DMakeRotation(angle, 0, 0, 1)
+            maskLayer.transform = CATransform3DMakeRotation(CGFloat.pi/4-angle*2, 0, 0, 1)
+        case .Counterclockwise:
+            strokeLayer.transform = CATransform3DMakeRotation(-angle, 0, 0, 1)
+            maskLayer.transform = CATransform3DMakeRotation(CGFloat.pi/4+angle*2, 0, 0, 1)
+        }
     }
 }
