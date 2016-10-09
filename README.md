@@ -59,6 +59,7 @@ The default setting is:
 
 The moment your set value to `progress`, the animation begin. Just like the demo gif shows above.
 
+There is an example in this repository showing how to use it. And [here](https://github.com/LinShiwei/HealthyDay) is another example using it in a practical app.
 
 ## Suggestion
 
