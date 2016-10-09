@@ -5,7 +5,7 @@
 
 # RingProgressView
 
-An view for showing progress.
+An ring view for showing progress. Like UIProgressView.
 
 ## Quick Look
 
@@ -55,9 +55,7 @@ The default setting is:
 
 **The most important thing is your can set ringProgressView's property `progress` to change the progress.**
 
-`progress` is in [0,1]. Any value outside the range set to `progress` will be adjust to 0 or 1. So feel safe to set this property.
-
-The moment your set value to `progress`, the animation begin. Just like the demo gif shows above.
+**`progress` is in [0,1]**. Any value outside the range set to `progress` will be adjust to 0 or 1. So feel safe to set this property. The moment your set value to `progress`, the animation begin. Just like the demo gif shows above.
 
 There is an example in this repository showing how to use it. And [here](https://github.com/LinShiwei/HealthyDay) is another example using it in a practical app.
 
@@ -68,5 +66,7 @@ There is an example in this repository showing how to use it. And [here](https:/
 - It's nicer to setting a suitable frame, dotCount and dotRadius.
 
 - If you don't want to show the ring inside the dot ring, you can set `hasRing:false` in the `setting` method.
+
+- RingProgressView's backgroundColor is `UIColor.clear`, so you can add it to any scene.
 
 
