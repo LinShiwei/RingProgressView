@@ -85,6 +85,7 @@ public class RingProgressView: UIView {
     public var progress : Double = 0{
         didSet{
             progress = progress > 1 ? 1 : progress
+            progress = progress < 0 ? 0 : progress
             strokeLayer.strokeEnd = CGFloat(progress)
             strokeEnd.fromValue = 1
             strokeEnd.duration = (1-progress)*animationDuration
